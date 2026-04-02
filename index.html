@@ -5,16 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Birthday! 🎂</title>
     <link rel="stylesheet" href="css/style.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <!-- 3D Tilt Container -->
-    <div class="container">
+    <!-- Background Music -->
+    <audio id="bg-music" loop>
+        <source src="song.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Cinematic Intro Overlay -->
+    <div id="overlay">
+        <div class="overlay-content">
+            <p style="font-size: 1.5rem; margin-bottom: 20px; color: #aaa;">For someone special...</p>
+            <button id="open-btn">Open Invitation 💌</button>
+        </div>
+    </div>
+
+    <!-- Floating Hearts Container -->
+    <div id="hearts-container"></div>
+
+    <!-- Main Card -->
+    <div class="container" id="main-card">
         <div class="card" id="card">
             
-            <!-- 3D Cake Section -->
+            <!-- 3D Cake -->
             <div class="cake-wrapper">
                 <div class="cake">
                     <div class="layer layer-bottom"></div>
@@ -29,11 +44,11 @@
                 <div class="shadow"></div>
             </div>
 
-            <!-- Message Section -->
+            <!-- Typewriter Message -->
             <div class="message">
-                <h1>Happy Birthday, <span class="highlight">Ramya</span></h1>
-                <p>Wishing you a day as amazing as you are. May all your dreams come true!</p>
-                <button id="wish-btn" onclick="makeWish()">✨ Make a Wish & Click</button>
+                <h1 id="greeting"></h1> <!-- Empty initially for typing -->
+                <p id="body-text" class="hidden-text">Wishing you a day as amazing as you are. May all your dreams come true!</p>
+                <button id="wish-btn" class="hidden-text" onclick="makeWish()">✨ Make a Wish & Blow Candle</button>
             </div>
 
         </div>
