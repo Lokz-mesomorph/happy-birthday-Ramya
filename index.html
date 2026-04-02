@@ -1,112 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday!</title>
-    <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body {
-            height:100vh; display:flex; justify-content:center; align-items:center;
-            background:linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            font-family: system-ui, -apple-system, sans-serif; overflow:hidden; color:#fff;
-        }
-        #overlay {
-            position:fixed; top:0; left:0; width:100%; height:100%; background:#000;
-            z-index:999; display:flex; justify-content:center; align-items:center;
-            transition:opacity 1s ease;
-        }
-        .overlay-content { text-align:center; }
-        #open-btn {
-            padding:15px 40px; background:#ff477e; color:#fff; border:none;
-            border-radius:50px; font-size:1.2rem; cursor:pointer;
-            box-shadow:0 0 20px #ff477e; animation:pulse 2s infinite;
-        }
-        .container { opacity:0; transition:opacity 1.5s ease; text-align:center; }
-        .container.show { opacity:1; }
-        .cake { position:relative; width:150px; height:180px; margin:0 auto 30px; animation:float 4s ease-in-out infinite; }
-        .layer { position:absolute; left:50%; transform:translateX(-50%); background:#ff85a1; border-radius:8px; box-shadow:0 4px 0 #ff477e; }
-        .bottom { bottom:0; width:140px; height:35px; }
-        .middle { bottom:35px; width:110px; height:30px; }
-        .top { bottom:65px; width:80px; height:25px; }
-        .icing { position:absolute; bottom:85px; left:50%; transform:translateX(-50%); width:140px; height:12px; background:#fff; border-radius:50%; opacity:0.9; }
-        .candle { position:absolute; bottom:85px; left:50%; transform:translateX(-50%); width:10px; height:40px; background:repeating-linear-gradient(45deg, #fff, #fff 4px, #ff477e 4px, #ff477e 8px); border-radius:2px; }
-        .flame { position:absolute; bottom:125px; left:50%; transform:translateX(-50%); width:14px; height:20px; background:#f5c518; border-radius:50% 50% 20% 20%; box-shadow:0 0 15px #f5c518, 0 0 30px #ff477e; animation:flicker 0.6s infinite alternate; }
-        .flame.out { animation:blowOut 0.4s forwards; opacity:0; }
-        h1 { font-family:cursive; font-size:2.2rem; margin:10px 0; text-shadow:0 0 10px #ff477e; min-height:50px; }
-        .typing::after { content:'|'; animation:blink 0.8s infinite; }
-        p { font-size:1rem; opacity:0.85; margin:15px 0; line-height:1.4; display:none; }
-        p.show { display:block; animation:fadeIn 1s forwards; }
-        button { padding:10px 25px; background:#ff477e; color:#fff; border:none; border-radius:50px; font-size:1rem; cursor:pointer; display:none; }
-        button.show { display:inline-block; animation:fadeIn 0.8s forwards; }
-        button:hover { transform:scale(1.05); }
-        canvas { position:fixed; top:0; left:0; pointer-events:none; z-index:10; }
-        @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
-        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
-        @keyframes flicker { 0%{opacity:0.8; transform:translateX(-50%) scale(0.9)} 100%{opacity:1; transform:translateX(-50%) scale(1.1)} }
-        @keyframes blowOut { 100%{transform:translateX(-50%) scale(0); opacity:0} }
-        @keyframes blink { 50%{opacity:0} }
-        @keyframes fadeIn { from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:translateY(0)} }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday!</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      font-family: system-ui, -apple-system, sans-serif;
+      color: #ffffff;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: #000000; z-index: 1000;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      transition: opacity 1s ease, visibility 1s ease;
+    }
+    #overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    #overlay p { font-size: 1.5rem; color: #aaaaaa; margin-bottom: 25px; }
+    #open-btn {
+      padding: 15px 40px; background: #ff477e; color: white; border: none;
+      border-radius: 50px; font-size: 1.2rem; cursor: pointer;
+      box-shadow: 0 0 20px rgba(255, 71, 126, 0.6); transition: transform 0.2s;
+    }
+    #open-btn:hover { transform: scale(1.05); }
+    
+    #main-content { text-align: center; opacity: 0; transform: translateY(20px); transition: all 1.5s ease; }
+    #main-content.show { opacity: 1; transform: translateY(0); }
+    
+    .cake-container { position: relative; width: 150px; height: 180px; margin: 0 auto 30px; animation: float 4s ease-in-out infinite; }
+    .layer { position: absolute; left: 50%; transform: translateX(-50%); background: #ff85a1; border-radius: 8px; box-shadow: 0 4px 0 #ff477e; }
+    .layer-bottom { bottom: 0; width: 140px; height: 35px; }
+    .layer-middle { bottom: 35px; width: 110px; height: 30px; }
+    .layer-top { bottom: 65px; width: 80px; height: 25px; }
+    .icing { position: absolute; bottom: 85px; left: 50%; transform: translateX(-50%); width: 140px; height: 12px; background: #fff; border-radius: 50%; opacity: 0.9; }
+    .candle { position: absolute; bottom: 85px; left: 50%; transform: translateX(-50%); width: 10px; height: 40px; background: repeating-linear-gradient(45deg, #fff 0px, #fff 4px, #ff477e 4px, #ff477e 8px); border-radius: 2px; }
+    .flame { position: absolute; bottom: 125px; left: 50%; transform: translateX(-50%); width: 14px; height: 20px; background: #f5c518; border-radius: 50% 50% 20% 20%; box-shadow: 0 0 15px #f5c518, 0 0 30px #ff477e; animation: flicker 0.6s infinite alternate; }
+    .flame.out { animation: blowOut 0.4s forwards; }
+    
+    h1 { font-family: cursive, serif; font-size: 2.5rem; margin: 15px 0; min-height: 60px; text-shadow: 0 0 10px rgba(255, 71, 126, 0.5); }
+    .typing::after { content: '|'; animation: blink 0.8s infinite; }
+    p.message { font-size: 1rem; opacity: 0.85; margin: 15px 0; line-height: 1.5; display: none; }
+    p.message.show { display: block; animation: fadeIn 1s forwards; }
+    button#wish-btn { padding: 12px 30px; background: #ff477e; color: white; border: none; border-radius: 50px; font-size: 1rem; cursor: pointer; display: none; margin-top: 10px; }
+    button#wish-btn.show { display: inline-block; animation: fadeIn 0.8s forwards; }
+    button#wish-btn:hover { transform: scale(1.05); }
+    
+    #confetti { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
+    
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+    @keyframes flicker { 0% { opacity: 0.8; transform: translateX(-50%) scale(0.95); } 100% { opacity: 1; transform: translateX(-50%) scale(1.05); } }
+    @keyframes blowOut { 0% { opacity: 1; transform: translateX(-50%) scale(1); } 100% { opacity: 0; transform: translateX(-50%) scale(0.1); } }
+    @keyframes blink { 50% { opacity: 0; } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
 </head>
 <body>
-    <audio id="bg-music" loop><source src="song.mp3" type="audio/mpeg"></audio>
-    <div id="overlay"><div class="overlay-content"><p style="font-size:1.4rem; margin-bottom:20px; color:#aaa;">For someone special...</p><button id="open-btn">Open Invitation 💌</button></div></div>
-    <div class="container" id="main-card">
-        <div class="cake">
-            <div class="layer bottom"></div><div class="layer middle"></div><div class="layer top"></div>
-            <div class="icing"></div><div class="candle"><div class="flame" id="flame"></div></div>
-        </div>
-        <h1 id="greeting"></h1>
-        <p id="body-text">Wishing you a day as amazing as you are. May all your dreams come true!</p>
-        <button id="wish-btn" onclick="makeWish()">✨ Make a Wish & Blow Candle</button>
+  <audio id="bg-music" loop><source src="song.mp3" type="audio/mpeg"></audio>
+
+  <div id="overlay">
+    <p>For someone special...</p>
+    <button id="open-btn">Open Invitation 💌</button>
+  </div>
+
+  <div id="main-content">
+    <div class="cake-container">
+      <div class="layer layer-bottom"></div>
+      <div class="layer layer-middle"></div>
+      <div class="layer layer-top"></div>
+      <div class="icing"></div>
+      <div class="candle"><div class="flame" id="flame"></div></div>
     </div>
-    <canvas id="confetti"></canvas>
-    <script>
-        const NAME = "YourFriendName"; // 👈 CHANGE THIS
-        const canvas = document.getElementById('confetti'), ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+    <h1 id="greeting"></h1>
+    <p class="message" id="body-text">Wishing you a day as amazing as you are. May all your dreams come true!</p>
+    <button id="wish-btn" onclick="makeWish()">✨ Make a Wish & Blow Candle</button>
+  </div>
 
-        document.getElementById('open-btn').onclick = () => {
-            document.getElementById('bg-music').play().catch(()=>{});
-            document.getElementById('overlay').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('overlay').style.display = 'none';
-                document.getElementById('main-card').classList.add('show');
-                typeWriter();
-            }, 800);
-        };
+  <canvas id="confetti"></canvas>
 
-        let i = 0;
-        function typeWriter() {
-            const txt = `Happy Birthday, ${NAME}! 🎂`;
-            if(i < txt.length) {
-                document.getElementById('greeting').textContent += txt.charAt(i);
-                document.getElementById('greeting').classList.add('typing');
-                i++; setTimeout(typeWriter, 100);
-            } else {
-                document.getElementById('greeting').classList.remove('typing');
-                document.getElementById('body-text').classList.add('show');
-                document.getElementById('wish-btn').classList.add('show');
-            }
-        }
+  <script>
+    const NAME = "YourFriendName"; // 👈 CHANGE THIS
+    const canvas = document.getElementById('confetti');
+    const ctx = canvas.getContext('2d');
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resize); resize();
 
-        function makeWish() {
-            document.getElementById('flame').classList.add('out');
-            const b = document.getElementById('wish-btn');
-            b.textContent = '🎉 Wish Made! 🎉'; b.style.background='#4caf50'; b.style.pointerEvents='none';
-            startConfetti();
-        }
+    document.getElementById('open-btn').addEventListener('click', function() {
+      document.getElementById('bg-music').play().catch(()=>{});
+      document.getElementById('overlay').classList.add('hidden');
+      setTimeout(() => {
+        document.getElementById('main-content').classList.add('show');
+        typeWriter();
+      }, 800);
+    });
 
-        function startConfetti() {
-            const P=[], C=['#ff0a54','#ff477e','#ffbe0b','#3a86ff','#8338ec','#ff7096'];
-            class Pt { constructor(){ this.x=Math.random()*canvas.width; this.y=-10; this.s=Math.random()*8+4; this.c=C[Math.floor(Math.random()*C.length)]; this.vy=Math.random()*3+2; this.vx=Math.random()*4-2; this.rot=Math.random()*360; this.o=1; }
-            update(){ this.y+=this.vy; this.x+=this.vx; this.rot+=5; if(this.y>canvas.height-50) this.o-=0.02; }
-            draw(){ ctx.save(); ctx.translate(this.x,this.y); ctx.rotate(this.rot*Math.PI/180); ctx.globalAlpha=this.o; ctx.fillStyle=this.c; ctx.fillRect(-this.s/2,-this.s/2,this.s,this.s); ctx.restore(); } }
-            for(let j=0;j<200;j++) P.push(new Pt());
-            (function anim(){ ctx.clearRect(0,0,canvas.width,canvas.height); P.forEach((p,k)=>{ p.update(); p.draw(); if(p.o<=0) P.splice(k,1); }); if(P.length) requestAnimationFrame(anim); })();
-        }
-    </script>
+    let i = 0;
+    const txt = `Happy Birthday, ${NAME}! 🎂`;
+    function typeWriter() {
+      if(i < txt.length) {
+        document.getElementById('greeting').textContent += txt.charAt(i);
+        document.getElementById('greeting').classList.add('typing');
+        i++; setTimeout(typeWriter, 100);
+      } else {
+        document.getElementById('greeting').classList.remove('typing');
+        document.getElementById('body-text').classList.add('show');
+        document.getElementById('wish-btn').classList.add('show');
+      }
+    }
+
+    function makeWish() {
+      document.getElementById('flame').classList.add('out');
+      const b = document.getElementById('wish-btn');
+      b.textContent = '🎉 Wish Made! 🎉'; b.style.background='#4caf50'; b.style.pointerEvents='none';
+      startConfetti();
+    }
+
+    function startConfetti() {
+      const particles = [], colors = ['#ff0a54','#ff477e','#ffbe0b','#3a86ff','#8338ec','#ff7096'];
+      class P {
+        constructor() { this.x=Math.random()*canvas.width; this.y=-20; this.s=Math.random()*8+4; this.c=colors[Math.floor(Math.random()*colors.length)]; this.vy=Math.random()*3+2; this.vx=Math.random()*2-1; this.rot=Math.random()*360; this.o=1; }
+        update() { this.y+=this.vy; this.x+=this.vx; this.rot+=4; if(this.y>canvas.height) this.o-=0.02; }
+        draw() { ctx.save(); ctx.translate(this.x,this.y); ctx.rotate(this.rot*Math.PI/180); ctx.globalAlpha=this.o; ctx.fillStyle=this.c; ctx.fillRect(-this.s/2,-this.s/2,this.s,this.s); ctx.restore(); }
+      }
+      for(let j=0;j<150;j++) particles.push(new P());
+      (function loop(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        for(let k=0;k<particles.length;k++) { particles[k].update(); particles[k].draw(); if(particles[k].o<=0) particles.splice(k,1); }
+        if(particles.length) requestAnimationFrame(loop);
+      })();
+    }
+  </script>
 </body>
 </html>
