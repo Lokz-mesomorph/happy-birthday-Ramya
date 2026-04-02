@@ -1,0 +1,164 @@
+:root {
+    --bg-gradient: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --primary: #e94560;
+    --gold: #f5c518;
+    --text: #ffffff;
+    --cake-pink: #ff85a1;
+    --cake-dark-pink: #ff477e;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--bg-gradient);
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+    color: var(--text);
+}
+
+.container {
+    perspective: 1000px;
+}
+
+/* Glassmorphism Card */
+.card {
+    background: var(--card-bg);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    width: 380px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    transition: transform 0.1s ease;
+    transform-style: preserve-3d;
+}
+
+/* 3D Cake */
+.cake-wrapper {
+    position: relative;
+    height: 220px;
+    width: 100%;
+    margin-bottom: 30px;
+    transform-style: preserve-3d;
+    animation: float 4s ease-in-out infinite;
+}
+
+.cake {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150px;
+}
+
+.layer {
+    width: 100%;
+    background: var(--cake-pink);
+    border-radius: 10px;
+    position: absolute;
+    box-shadow: 0 5px 0 var(--cake-dark-pink);
+}
+
+.layer-bottom { height: 40px; bottom: 0; width: 150px; }
+.layer-middle { height: 35px; bottom: 40px; width: 120px; left: 15px; }
+.layer-top    { height: 30px; bottom: 75px; width: 90px; left: 30px; }
+
+.icing {
+    position: absolute;
+    width: 150px;
+    height: 15px;
+    background: #fff;
+    top: 135px; /* Adjust based on layer stack */
+    border-radius: 50%;
+    z-index: 10;
+    opacity: 0.9;
+}
+
+.candle {
+    position: absolute;
+    width: 12px;
+    height: 45px;
+    background: repeating-linear-gradient(45deg, #fff, #fff 5px, var(--primary) 5px, var(--primary) 10px);
+    bottom: 105px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 3px;
+    z-index: 5;
+}
+
+.flame {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 24px;
+    background: var(--gold);
+    border-radius: 50% 50% 20% 20%;
+    box-shadow: 0 0 10px var(--gold), 0 0 20px #ff477e;
+    animation: flicker 1s infinite alternate;
+    transform-origin: bottom center;
+}
+
+.flame.out {
+    animation: blowOut 0.3s forwards;
+    opacity: 0;
+}
+
+/* Message */
+.message h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px rgba(233, 69, 96, 0.5);
+}
+
+.highlight { color: var(--gold); }
+
+.message p {
+    font-size: 0.95rem;
+    opacity: 0.8;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+button {
+    padding: 12px 25px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(233, 69, 96, 0.4);
+}
+
+button:hover {
+    transform: translateY(-2px) scale(1.05);
+    background: #ff2e50;
+}
+
+/* Animations */
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+@keyframes flicker {
+    0% { transform: translateX(-50%) scale(1); opacity: 1; }
+    100% { transform: translateX(-50%) scale(0.9); opacity: 0.8; }
+}
+
+@keyframes blowOut {
+    0% { transform: translateX(-50%) scale(1); opacity: 1; }
+    50% { transform: translateX(-50%) scale(1.5); opacity: 0.5; }
+    100% { transform: translateX(-50%) scale(0); opacity: 0; }
+}
