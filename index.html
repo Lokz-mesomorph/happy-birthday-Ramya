@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday! 🎂</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- 3D Tilt Container -->
+    <div class="container">
+        <div class="card" id="card">
+            
+            <!-- 3D Cake Section -->
+            <div class="cake-wrapper">
+                <div class="cake">
+                    <div class="layer layer-bottom"></div>
+                    <div class="layer layer-middle"></div>
+                    <div class="layer layer-top"></div>
+                    <div class="icing"></div>
+                    <div class="candle">
+                        <div class="flame" id="flame"></div>
+                    </div>
+                </div>
+                <div class="plate"></div>
+                <div class="shadow"></div>
+            </div>
+
+            <!-- Message Section -->
+            <div class="message">
+                <h1>Happy Birthday, <span class="highlight">Ramya</span></h1>
+                <p>Wishing you a day as amazing as you are. May all your dreams come true!</p>
+                <button id="wish-btn" onclick="makeWish()">✨ Make a Wish & Click</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Confetti Canvas -->
+    <canvas id="confetti"></canvas>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
