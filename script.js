@@ -1,5 +1,5 @@
 // --- 1. CONFIGURATION ---
-const NAME = "YourFriendName"; // 👈 CHANGE THIS TO HER NAME
+const NAME = "Ramya"; // 👈 CHANGE THIS TO HER NAME
 const MUSIC_VOLUME = 0.5;
 
 // --- 2. ELEMENTS ---
